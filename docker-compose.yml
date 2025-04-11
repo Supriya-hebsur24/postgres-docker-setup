@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:17
+    container_name: postgres_v2
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mypass123
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - pg-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_v2
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: abc@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: secret
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+    networks:
+      - pg-network
+
+volumes:
+  pgdata:
+
+networks:
+  pg-network:
